@@ -59,9 +59,9 @@ static DialogMessageButton compliance_screen(DialogsApp* dialogs, DialogMessage*
 static DialogMessageButton unleashed_info_screen(DialogsApp* dialogs, DialogMessage* message) {
     DialogMessageButton result;
 
-    const char* screen_header = "CoreOS Zero\n";
+    const char* screen_header = "CoreOS Beta\n";
 
-    const char* screen_text = "Overpowered BLE inside\n"
+    const char* screen_text = "Play with caution.\n"
                               "Not for illegal use!";
 
     dialog_message_set_header(message, screen_header, 0, 0, AlignLeft, AlignTop);
