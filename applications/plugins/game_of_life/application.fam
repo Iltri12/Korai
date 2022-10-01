@@ -1,11 +1,12 @@
 App(
-    appid="game_of_life",
+    appid="GameOfLife",
     name="Game of Life",
-    apptype=FlipperAppType.PLUGIN,
+    apptype=FlipperAppType.EXTERNAL,
     entry_point="game_of_life_app",
-    cdefines=["APP_GAME_OF_LIFE"],
+    cdefines=["APP_GAMEOFLIFE_GAME"],
     requires=["gui"],
-    stack_size=1 * 1024,
-    icon="A_Plugins_14",
-    order=35,
+    stack_size=2 * 1024,
+    order=110,
+    fap_icon="golIcon.png",
+    fap_category="Games",
 )
