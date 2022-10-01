@@ -5,6 +5,8 @@
 #include <lib/toolbox/path.h>
 #include "subghz_i.h"
 
+#define TAG "SubGhzApp"
+
 bool subghz_custom_event_callback(void* context, uint32_t event) {
     furi_assert(context);
     SubGhz* subghz = context;
@@ -174,13 +176,31 @@ SubGhz* subghz_alloc() {
     subghz->setting = subghz_setting_alloc();
     subghz_setting_load(subghz->setting, EXT_PATH("subghz/assets/setting_user"));
 
+    // Load last used values for Read, Read RAW, etc. or default
+    subghz->last_settings = subghz_last_settings_alloc();
+    subghz_last_settings_load(
+        subghz->last_settings, subghz_setting_get_preset_count(subghz->setting));
+#if FURI_DEBUG
+    FURI_LOG_D(
+        TAG,
+        "last frequency: %d, preset: %d, detect_raw: %d",
+        subghz->last_settings->frequency,
+        subghz->last_settings->preset,
+        subghz->last_settings->detect_raw);
+#endif
+    subghz_setting_set_default_frequency(subghz->setting, subghz->last_settings->frequency);
+
     //init Worker & Protocol & History & KeyBoard
     subghz->lock = SubGhzLockOff;
     subghz->txrx = malloc(sizeof(SubGhzTxRx));
     subghz->txrx->preset = malloc(sizeof(SubGhzPresetDefinition));
     string_init(subghz->txrx->preset->name);
     subghz_preset_init(
-        subghz, "AM650", subghz_setting_get_default_frequency(subghz->setting), NULL, 0);
+        subghz,
+        subghz_setting_get_preset_name(subghz->setting, subghz->last_settings->preset),
+        subghz->last_settings->frequency,
+        NULL,
+        0);
 
     subghz->txrx->txrx_state = SubGhzTxRxStateSleep;
     subghz->txrx->hopper_state = SubGhzHopperStateOFF;
@@ -196,7 +216,7 @@ SubGhz* subghz_alloc() {
     subghz_environment_set_nice_flor_s_rainbow_table_file_name(
         subghz->txrx->environment, EXT_PATH("subghz/assets/nice_flor_s"));
     subghz->txrx->receiver = subghz_receiver_alloc_init(subghz->txrx->environment);
-    subghz_receiver_set_filter(subghz->txrx->receiver, SubGhzProtocolFlag_Decodable);
+    subghz_last_settings_set_detect_raw_values(subghz);
 
     subghz_worker_set_overrun_callback(
         subghz->txrx->worker, (SubGhzWorkerOverrunCallback)subghz_receiver_reset);
@@ -287,6 +307,7 @@ void subghz_free(SubGhz* subghz) {
 
     //setting
     subghz_setting_free(subghz->setting);
+    subghz_last_settings_free(subghz->last_settings);
 
     //Worker & Protocol & History
     subghz_receiver_free(subghz->txrx->receiver);

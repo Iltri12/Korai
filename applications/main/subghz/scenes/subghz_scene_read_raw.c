@@ -136,8 +136,8 @@ bool subghz_scene_read_raw_on_event(void* context, SceneManagerEvent event) {
                 //Restore default setting
                 subghz_preset_init(
                     subghz,
-                    "AM650",
-                    subghz_setting_get_default_frequency(subghz->setting),
+                    subghz_setting_get_preset_name(subghz->setting, subghz->last_settings->preset),
+                    subghz->last_settings->frequency,
                     NULL,
                     0);
                 if(!scene_manager_search_and_switch_to_previous_scene(
@@ -341,5 +341,5 @@ void subghz_scene_read_raw_on_exit(void* context) {
     notification_message(subghz->notifications, &sequence_reset_rgb);
 
     //filter restoration
-    subghz_receiver_set_filter(subghz->txrx->receiver, SubGhzProtocolFlag_Decodable);
+    subghz_last_settings_set_detect_raw_values(subghz);
 }
