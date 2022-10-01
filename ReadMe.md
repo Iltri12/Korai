@@ -1,10 +1,5 @@
-<h3 align="center">
-<a href="https://github.com/Eng1n33r/flipperzero-firmware">
-<img src="https://user-images.githubusercontent.com/10697207/186202043-26947e28-b1cc-459a-8f20-ffcc7fc0c71c.png" align="center" alt="fzCUSTOM" border="0">
-</a>
-</h3>
 
-### Welcome to Flipper Zero Unleashed Firmware repo! 
+### Welcome to Flipper Zero CoreOS Firmware repo! 
 Our goal is to make any features possible in this device without any limitations! 
 
 Please help us implement emulation for all subghz dynamic (rolling code) protocols!
