@@ -59,9 +59,9 @@ static DialogMessageButton compliance_screen(DialogsApp* dialogs, DialogMessage*
 static DialogMessageButton unleashed_info_screen(DialogsApp* dialogs, DialogMessage* message) {
     DialogMessageButton result;
 
-    const char* screen_header = "CoreOS Beta\n";
+    const char* screen_header = "Project Korai\n";
 
-    const char* screen_text = "Play with caution.\n"
+    const char* screen_text = "Software provided as is\n"
                               "Not for illegal use!";
 
     dialog_message_set_header(message, screen_header, 0, 0, AlignLeft, AlignTop);
@@ -78,7 +78,21 @@ static DialogMessageButton unleashed_info_screen2(DialogsApp* dialogs, DialogMes
 
     const char* screen_text = "Custom plugins included\n"
                               "For updates & info visit\n"
-                              "github.com/ankris812/CoreOS";
+                              "github.com/ankris812/Korai";
+
+    dialog_message_set_text(message, screen_text, 0, 0, AlignLeft, AlignTop);
+    result = dialog_message_show(dialogs, message);
+    dialog_message_set_text(message, NULL, 0, 0, AlignLeft, AlignTop);
+
+    return result;
+}
+
+static DialogMessageButton unleashed_info_screen3(DialogsApp* dialogs, DialogMessage* message) {
+    DialogMessageButton result;
+
+    const char* screen_text = "Me, filpper devices \n"
+                              "or any other related to this firmware\n"
+                              "wont be responsible of what you do";
 
     dialog_message_set_text(message, screen_text, 0, 0, AlignLeft, AlignTop);
     result = dialog_message_show(dialogs, message);
@@ -178,6 +192,7 @@ static DialogMessageButton fw_version_screen(DialogsApp* dialogs, DialogMessage*
 
 const AboutDialogScreen about_screens[] = {
     unleashed_info_screen,
+    unleashed_info_screen3,
     unleashed_info_screen2,
     product_screen,
     compliance_screen,

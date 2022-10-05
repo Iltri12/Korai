@@ -17,7 +17,7 @@
 #define WAVPLAYER_FOLDER "/ext/wav_player"
 
 static bool open_wav_stream(Stream* stream) {
-    DialogsApp* dialogs = furi_record_open(RECORD_DIALOGS);
+    DialogsApp* dialogs = furi_record_open("dialogs");
     bool result = false;
     string_t path;
     string_init(path);
@@ -29,7 +29,7 @@ static bool open_wav_stream(Stream* stream) {
 
     bool ret = dialog_file_browser_show(dialogs, path, path, &browser_options);
 
-    furi_record_close(RECORD_DIALOGS);
+    furi_record_close("dialogs");
     if(ret) {
         if(!file_stream_open(stream, string_get_cstr(path), FSAM_READ, FSOM_OPEN_EXISTING)) {
             FURI_LOG_E(TAG, "Cannot open file \"%s\"", string_get_cstr(path));
@@ -119,7 +119,7 @@ static WavPlayerApp* app_alloc() {
     view_dispatcher_attach_to_gui(app->view_dispatcher, app->gui, ViewDispatcherTypeFullscreen);
     view_dispatcher_switch_to_view(app->view_dispatcher, 0);
 
-    app->notification = furi_record_open(RECORD_NOTIFICATION);
+    app->notification = furi_record_open("notification");
     notification_message(app->notification, &sequence_display_backlight_enforce_on);
 
     return app;
@@ -139,7 +139,7 @@ static void app_free(WavPlayerApp* app) {
     furi_record_close(RECORD_STORAGE);
 
     notification_message(app->notification, &sequence_display_backlight_enforce_auto);
-    furi_record_close(RECORD_NOTIFICATION);
+    furi_record_close("notification");
     free(app);
 }
 

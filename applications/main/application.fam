@@ -33,5 +33,6 @@ App(
         #"u2f",
         "fap_loader",
         "archive",
+        "clock",
     ],
 )
